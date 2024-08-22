@@ -69,7 +69,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Sidebar />
+      {/* <Sidebar />
       <FAB onClick={toggleModal} />
       {modal && (
         <Modal onClose={toggleModal} onSave={onSave} initialData={edit} />
@@ -79,7 +79,10 @@ export default function Home() {
         onCheck={onCheck}
         onDelete={onDelete}
         onEdit={onEdit}
-      />
+      /> */}
+      <div style={{padding: "10px"}}>
+        <p>CÔNG TY CỔ PHẦN THIẾT BỊ SISC VIỆT NAM</p>
+      </div>
     </div>
   );
 }
