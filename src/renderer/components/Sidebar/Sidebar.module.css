@@ -3,7 +3,7 @@
 .sidenav {
   width: 240px;
   height: 100vh;
-  background: var(--background-color);
+  background-color: rgb(57, 55, 76);
   overflow-x: hidden;
   padding-left: 10px;
 }
