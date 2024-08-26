@@ -3,7 +3,6 @@ import Sidebar from '../../components/Sidebar';
 import FAB from '../../components/FAB';
 import Modal from '../../components/Modal';
 
-import styles from './Home.module.css';
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
@@ -69,8 +68,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <Sidebar />
+    <div>
       {/*
       <FAB onClick={toggleModal} />
       {modal && (
@@ -82,26 +80,8 @@ export default function Home() {
         onDelete={onDelete}
         onEdit={onEdit}
       /> */}
-      <Box
-        sx={{ flexGrow: 1 }}
-        style={{
-          backgroundColor: '#39374C',
-          minHeight: '100vh',
-        }}
-      >
-        <Box
-          style={{
-            borderBottomLeftRadius: '25px',
-            borderTopLeftRadius: '25px',
-            backgroundColor: '#F1F5FB',
-            minHeight: '100vh',
-            width: '100%',
-          }}
-        >
-          <div style={{ padding: '10px' }}>
-            <p>CÔNG TY CỔ PHẦN THIẾT BỊ SISC VIỆT NAM</p>
-          </div>
-        </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Box></Box>
       </Box>
     </div>
   );
