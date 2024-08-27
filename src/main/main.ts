@@ -153,10 +153,6 @@ app
       return getAllTODO();
     });
     ipcMain.handle('db-query', (event, sqlQuery: string, params: any[]) => {
-      console.error(__dirname);
-      console.error(
-        path.join(__dirname, '../../', 'release/app', 'database.db'),
-      );
       const db = new Database(
         path.join(__dirname, '../../', 'release/app', 'database.db'),
         { verbose: console.log, fileMustExist: true },

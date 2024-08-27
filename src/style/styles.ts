@@ -1,5 +1,5 @@
 import { Switch, Table, TableHead, Typography, styled } from '@mui/material';
-import StyledTextField from 'renderer/components/StyledTextField';
+import StyledTextField from 'common/StyledTextField';
 
 export const TitleWrapper = styled('div')(({ theme }) => ({
   display: 'flex',

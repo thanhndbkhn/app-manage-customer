@@ -1,5 +1,6 @@
 /** @format */
 
+import { FormLabel } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
@@ -34,15 +35,28 @@ const StyledTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
     padding: '0px',
 
     '&::placeholder': {
-      color: 'black',
+      color: '#BDBEC7',
       fontWeight: 500,
     },
   },
 
   fieldSet: {
     borderRadius: '10px',
-    borderColor: 'black',
+    borderColor: 'rgba(75, 76, 90, 0.3)',
   },
 }));
 
 export default StyledTextField;
+
+export const TextFieldLabel = styled(FormLabel)(({ theme }) => ({
+  marginLeft: '13px',
+  marginBottom: '9px',
+  fontSize: '13px',
+  lineHeight: '16px',
+  fontWeight: 500,
+  color: '#2F2F3D',
+
+  '.MuiFormLabel-asterisk': {
+    color: 'red',
+  },
+}));

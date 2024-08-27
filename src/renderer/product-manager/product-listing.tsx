@@ -4,7 +4,6 @@ import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 
 export const ProductListing = () => {
   const { data: listProduct } = useGetListProduct();
-  console.log(listProduct);
   return (
     <>
       <TableWrapper>
