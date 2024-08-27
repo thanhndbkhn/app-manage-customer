@@ -28,6 +28,18 @@ const electronHandler = {
   getAllTODO: () => ipcRenderer.invoke('todo:getAll'),
   getOneTODO: (id: number) => ipcRenderer.invoke('todo:getOne', id),
   updateTODO: (todo: TODO) => ipcRenderer.invoke('todo:update', todo),
+  queryDatabase: async (sqlQuery: string, params: any[]): Promise<any[]> => {
+    return await ipcRenderer.invoke('db-query', sqlQuery, params);
+  },
+  insertData: async (sqlQuery: string, params: any[]): Promise<number> => {
+    return await ipcRenderer.invoke('db-insert', sqlQuery, params);
+  },
+  updateData: async (sqlQuery: string, params: any[]): Promise<number> => {
+    return await ipcRenderer.invoke('db-update', sqlQuery, params);
+  },
+  deleteData: async (sqlQuery: string, params: any[]): Promise<number> => {
+    return await ipcRenderer.invoke('db-delete', sqlQuery, params);
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

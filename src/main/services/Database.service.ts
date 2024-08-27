@@ -9,6 +9,9 @@ export type TODO = {
 };
 
 export function connect() {
+  console.error(
+    path.join(__dirname, '../../../', 'release/app', 'database.db'),
+  );
   return Database(
     path.join(__dirname, '../../../', 'release/app', 'database.db'),
     { verbose: console.log, fileMustExist: true },
@@ -48,7 +51,8 @@ export function getAllTODO() {
   const db = connect();
 
   const stm = db.prepare('SELECT * FROM todos');
-
+  const data = stm.all() as TODO[];
+  console.log(data);
   return stm.all() as TODO[];
 }
 

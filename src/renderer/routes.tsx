@@ -6,6 +6,7 @@ import styles from './views/Home/Home.module.css';
 import Sidebar from './components/Sidebar';
 import { Header } from './components/Header';
 import { Box } from '@mui/material';
+import ReactQueryProvider from 'main/queries/ReactQueryProvider';
 
 export default function appRoutes() {
   return (
@@ -24,13 +25,16 @@ export default function appRoutes() {
               borderTopLeftRadius: '25px',
               background: 'rgb(241, 245, 251)',
               height: '100vh',
+              padding: '25px',
             }}
           >
-            <Header />
-            <Routes>
-              <Route path="/" Component={Home} />
-              <Route path="product" Component={ProductManager} />
-            </Routes>
+            <ReactQueryProvider>
+              <Header />
+              <Routes>
+                <Route path="/" Component={Home} />
+                <Route path="product" Component={ProductManager} />
+              </Routes>
+            </ReactQueryProvider>
           </Box>
         </Box>
       </div>

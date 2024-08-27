@@ -11,7 +11,6 @@
 .sidenav a {
   padding: 10px;
   text-decoration: none;
-  font-family: var(--font);
   font-size: 1.1rem;
   color: var(--link-color);
   display: block;

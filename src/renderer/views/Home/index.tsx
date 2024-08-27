@@ -57,7 +57,7 @@ export default function Home() {
 
   async function getAllTODOS() {
     const data = await window.electron.getAllTODO();
-
+    console.log('data', data);
     if (data) {
       setTodos(data);
     }

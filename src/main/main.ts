@@ -14,6 +14,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import Database from 'better-sqlite3';
+
 import {
   deleteTODO,
   getAllTODO,
@@ -150,6 +152,69 @@ app
     ipcMain.handle('todo:getAll', async () => {
       return getAllTODO();
     });
+    ipcMain.handle('db-query', (event, sqlQuery: string, params: any[]) => {
+      console.error(__dirname);
+      console.error(
+        path.join(__dirname, '../../', 'release/app', 'database.db'),
+      );
+      const db = new Database(
+        path.join(__dirname, '../../', 'release/app', 'database.db'),
+        { verbose: console.log, fileMustExist: true },
+      );
+      try {
+        const stmt = db.prepare(sqlQuery);
+        const result = stmt.all(params);
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        db.close();
+      }
+    });
+    ipcMain.handle('db-insert', (event, sqlQuery: string, params: any[]) => {
+      const db = new Database('database.db', { verbose: console.log });
+      try {
+        const stmt = db.prepare(sqlQuery);
+        const result = stmt.run(params);
+        return result.lastInsertRowid;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        db.close();
+      }
+    });
+
+    // Update data (UPDATE)
+    ipcMain.handle('db-update', (event, sqlQuery: string, params: any[]) => {
+      const db = new Database('database.db', { verbose: console.log });
+      try {
+        const stmt = db.prepare(sqlQuery);
+        const result = stmt.run(params);
+        return result.changes; // number of rows updated
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        db.close();
+      }
+    });
+
+    // Delete data (DELETE)
+    ipcMain.handle('db-delete', (event, sqlQuery: string, params: any[]) => {
+      const db = new Database('database.db', { verbose: console.log });
+      try {
+        const stmt = db.prepare(sqlQuery);
+        const result = stmt.run(params);
+        return result.changes; // number of rows deleted
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        db.close();
+      }
+    });
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
@@ -157,4 +222,5 @@ app
       if (mainWindow === null) createWindow();
     });
   })
+
   .catch(console.log);
