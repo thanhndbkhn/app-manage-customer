@@ -8,6 +8,7 @@ import { Header } from './components/Header';
 import { Box } from '@mui/material';
 import ReactQueryProvider from 'main/queries/ReactQueryProvider';
 import ThemeRegistry from './theme/ThemeRegistry';
+import { CustomerManager } from './customer-manager/customer-manager';
 
 export default function appRoutes() {
   return (
@@ -17,7 +18,7 @@ export default function appRoutes() {
         <Box
           style={{
             backgroundColor: '#39374C',
-            width: 'calc(100% - 240px)',
+            width: '100%',
           }}
         >
           <Box
@@ -34,8 +35,9 @@ export default function appRoutes() {
                 <Header />
                 <Routes>
                   <Route path="/">
-                    <Route index element={<Navigate to="product" replace />} />
+                    <Route index element={<Navigate to="customer" replace />} />
                     <Route path="product" Component={ProductManager} />
+                    <Route path="customer" Component={CustomerManager} />
                   </Route>
                 </Routes>
               </ReactQueryProvider>
