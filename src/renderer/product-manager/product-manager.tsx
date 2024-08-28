@@ -24,7 +24,9 @@ export const ProductManager = () => {
         <Tab value={ITabProduct.Create} label="Tạo sản phẩm" />
       </Tabs>
       {value === ITabProduct.List && <ProductListing />}
-      {value === ITabProduct.Create && <ProductCreate />}
+      {value === ITabProduct.Create && (
+        <ProductCreate onPrevStep={() => setValue(ITabProduct.List)} />
+      )}
     </Box>
   );
 };

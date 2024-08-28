@@ -12,10 +12,16 @@ export const convertDataCurrency = (
         });
         return {
           value: `${currency.CODE} ${formattedValue}`,
-          key: currency.ID,
+          key: currency.CODE,
         };
       },
     );
   }
   return dataConvert;
+};
+
+export const generateEntityId = () => {
+  const id = new Date().getTime() * 100 + Math.floor(Math.random() * (100 + 1));
+  console.log(id);
+  return id;
 };

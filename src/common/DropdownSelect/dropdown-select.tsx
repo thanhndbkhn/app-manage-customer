@@ -33,7 +33,6 @@ const DropdownSelect = (props: IDropdownSelect) => {
       setValue(props.valueDefault);
     }
   }, [props.valueDefault]);
-  console.log(value);
   return (
     <div style={{ width: '100%', position: 'relative' }}>
       <div

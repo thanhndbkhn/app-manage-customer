@@ -11,7 +11,10 @@ export const ProductListing = () => {
           <StyledTableHead>
             <TableRow>
               <TableCell>Id</TableCell>
-              <TableCell align="left" style={{ maxWidth: '200px' }}>
+              <TableCell
+                align="left"
+                style={{ maxWidth: '200px', minWidth: '200px' }}
+              >
                 Tên
               </TableCell>
               <TableCell align="left">Công ty</TableCell>
@@ -35,7 +38,10 @@ export const ProductListing = () => {
                   <TableCell component="th" scope="row">
                     {row.PRODUCT_ID}
                   </TableCell>
-                  <TableCell align="left" style={{ maxWidth: '200px' }}>
+                  <TableCell
+                    align="left"
+                    style={{ maxWidth: '200px', minWidth: '200px' }}
+                  >
                     {row.PRODUCT_NAME}
                   </TableCell>
                   <TableCell align="left">{row.COMPANY}</TableCell>

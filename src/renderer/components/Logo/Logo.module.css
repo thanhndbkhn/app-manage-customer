@@ -3,5 +3,6 @@
 .logo {
   color: var(--primary-color);
   margin: 20px 0px;
+  font-size: 28px;
   font-weight: 800;
 }

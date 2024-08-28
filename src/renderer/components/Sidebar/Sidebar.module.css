@@ -5,11 +5,12 @@
   height: 100vh;
   background-color: rgb(57, 55, 76);
   overflow-x: hidden;
-  padding-left: 10px;
+  padding: 0 10px;
 }
 
 .sidenav a {
   padding: 10px;
+  margin-top: 10px;
   text-decoration: none;
   font-size: 1.1rem;
   color: var(--link-color);

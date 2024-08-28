@@ -1,4 +1,4 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ProductManager } from './product-manager/product-manager';
 
 import Home from './views/Home';
@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar';
 import { Header } from './components/Header';
 import { Box } from '@mui/material';
 import ReactQueryProvider from 'main/queries/ReactQueryProvider';
+import ThemeRegistry from './theme/ThemeRegistry';
 
 export default function appRoutes() {
   return (
@@ -25,16 +26,20 @@ export default function appRoutes() {
               borderTopLeftRadius: '25px',
               background: 'rgb(241, 245, 251)',
               height: '100vh',
-              padding: '25px',
+              padding: '0 25px',
             }}
           >
-            <ReactQueryProvider>
-              <Header />
-              <Routes>
-                <Route path="/" Component={Home} />
-                <Route path="product" Component={ProductManager} />
-              </Routes>
-            </ReactQueryProvider>
+            <ThemeRegistry>
+              <ReactQueryProvider>
+                <Header />
+                <Routes>
+                  <Route path="/">
+                    <Route index element={<Navigate to="product" replace />} />
+                    <Route path="product" Component={ProductManager} />
+                  </Route>
+                </Routes>
+              </ReactQueryProvider>
+            </ThemeRegistry>
           </Box>
         </Box>
       </div>
