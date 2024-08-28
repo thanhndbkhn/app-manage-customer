@@ -35,10 +35,12 @@ export const ProductListing = () => {
                     cursor: 'pointer',
                   }}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell contentEditable component="th" scope="row">
                     {row.PRODUCT_ID}
                   </TableCell>
                   <TableCell
+                    contentEditable
+                    suppressContentEditableWarning={false}
                     align="left"
                     style={{ maxWidth: '200px', minWidth: '200px' }}
                   >

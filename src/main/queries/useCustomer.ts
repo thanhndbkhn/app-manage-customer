@@ -1,5 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { getListCustomer } from 'main/services/customer.service';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createCustomer,
+  getListCustomer,
+} from 'main/services/customer.service';
 
 export function useGetListCustomer() {
   return useQuery({
@@ -17,3 +20,15 @@ export function useGetListCustomer() {
   });
 }
 
+export function useCreateCustomer() {
+  return useMutation({
+    mutationFn: async (body: any) => {
+      try {
+        return createCustomer(body);
+      } catch (error) {
+        console.log(error);
+        throw Error();
+      }
+    },
+  });
+}

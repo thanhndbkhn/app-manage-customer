@@ -21,7 +21,9 @@ export const CustomerListing = () => {
               <TableCell align="left">Thành phố</TableCell>
               <TableCell align="left">Kiểu mua</TableCell>
               <TableCell align="left">Phân loại</TableCell>
-              <TableCell align="left">Ngày tạo</TableCell>
+              <TableCell align="left" style={{ minWidth: '110px' }}>
+                Ngày tạo
+              </TableCell>
             </TableRow>
           </StyledTableHead>
           <TableBody>

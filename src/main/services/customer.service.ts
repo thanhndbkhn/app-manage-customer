@@ -17,3 +17,27 @@ export async function getListCustomer() {
   );
   return result;
 }
+
+export async function createCustomer(body: any) {
+  const sql = `
+      INSERT INTO CUSTOMER (
+        "TAX_CODE",
+        "CUSTOMER_NAME",
+        "CLASSIFY",
+        "TYPE_BUY",
+        "ADDRESS",
+        "CITY"
+      )
+      VALUES (?, ?, ?, ?, ?, ?);
+    `;
+
+  const result = await window.electron.insertData(sql, [
+    body.taxCode,
+    body.customerName,
+    body.classify,
+    body.typeBuy,
+    body.address,
+    body.city,
+  ]);
+  return result;
+}
