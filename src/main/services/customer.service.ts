@@ -10,12 +10,38 @@ export interface ICustomer {
   CREATED_AT: string;
 }
 
-export async function getListCustomer() {
+export async function getListCustomer(params: {
+  searchQuery: string;
+  page: number;
+  perPage: number;
+}) {
+  const offset = (params.page - 1) * params.perPage;
+
+  const countSql = `
+    SELECT COUNT(*) as totalItems FROM CUSTOMER
+    WHERE CUSTOMER_NAME LIKE ?;`;
+
+  const totalResult = await window.electron.queryDatabase(countSql, [
+    `%${params.searchQuery || ''}%`,
+  ]);
+
+  const totalItems = totalResult[0].totalItems;
+  const totalPages = Math.ceil(totalItems / params.perPage);
   const result = await window.electron.queryDatabase(
-    'SELECT * FROM CUSTOMER',
-    [],
+    `SELECT * FROM CUSTOMER WHERE CUSTOMER_NAME LIKE ?
+    ORDER BY TAX_CODE ASC
+    LIMIT ? OFFSET ?`,
+    [
+      `%${params.searchQuery || ''}%`, // For ERP_CODE
+      params.perPage,
+      offset,
+    ],
   );
-  return result;
+  return {
+    items: result,
+    pageCount: totalPages,
+    total: totalItems,
+  };
 }
 
 export async function createCustomer(body: any) {

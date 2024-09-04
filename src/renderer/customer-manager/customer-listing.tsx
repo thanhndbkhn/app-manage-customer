@@ -1,20 +1,36 @@
 import { TableRow, TableCell, TableBody } from '@mui/material';
+import { usePaginationState } from 'hooks/use-pagination-state';
 import { useGetListCustomer } from 'main/queries/useCustomer';
+import { PaginationListing } from 'renderer/components/Pagination/pagination-listing';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 export const CustomerListing = () => {
-  const { data: listCustomer } = useGetListCustomer();
-  console.log(listCustomer);
+  const pagination = usePaginationState({
+    initialPage: 1,
+    initialPerPage: 15,
+  });
+  const { data: listCustomer } = useGetListCustomer({
+    searchQuery: '',
+    page: pagination.page,
+    perPage: pagination.perPage,
+  });
   return (
     <>
-      <TableWrapper>
+      <TableWrapper
+        style={{ overflowY: 'auto', height: 'calc(100vh - 180px)' }}
+      >
         <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
           <StyledTableHead>
             <TableRow>
               <TableCell>Mã số thuế</TableCell>
-              <TableCell align="left">Tên</TableCell>
+              <TableCell
+                style={{ maxWidth: '350px', minWidth: '350px' }}
+                align="left"
+              >
+                Tên
+              </TableCell>
               <TableCell
                 align="left"
-                style={{ maxWidth: '200px', minWidth: '200px' }}
+                style={{ maxWidth: '300px', minWidth: '300px' }}
               >
                 Địa chỉ
               </TableCell>
@@ -27,8 +43,8 @@ export const CustomerListing = () => {
             </TableRow>
           </StyledTableHead>
           <TableBody>
-            {listCustomer && listCustomer.length ? (
-              listCustomer.map((row, index) => (
+            {listCustomer && listCustomer.items.length ? (
+              listCustomer.items.map((row, index) => (
                 <TableRow
                   key={index}
                   sx={{
@@ -58,6 +74,21 @@ export const CustomerListing = () => {
           </TableBody>
         </StyledTable>
       </TableWrapper>
+      {listCustomer && (
+        <div style={{ marginTop: '15px' }}>
+          <PaginationListing
+            page={pagination.page}
+            perPage={pagination.perPage}
+            total={listCustomer?.total}
+            onNextPage={() => {
+              pagination.setPage(pagination.page + 1);
+            }}
+            onPreviousPage={() => {
+              pagination.setPage(pagination.page - 1);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };

@@ -4,12 +4,12 @@ import {
   getListCustomer,
 } from 'main/services/customer.service';
 
-export function useGetListCustomer() {
+export function useGetListCustomer(params: any) {
   return useQuery({
-    queryKey: ['list-customer'],
+    queryKey: ['list-customer', params],
     queryFn: async () => {
       try {
-        const data = await getListCustomer();
+        const data = await getListCustomer(params);
         return data;
       } catch (error) {
         throw Error();
