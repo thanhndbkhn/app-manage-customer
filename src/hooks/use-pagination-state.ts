@@ -30,7 +30,7 @@ export const usePaginationState = ({
 }: UsePaginationStateOptions = {}) => {
   const [state, setState] = React.useState<PaginationState>(() => ({
     page: initialPage ?? 1,
-    perPage: initialPerPage ?? 5,
+    perPage: initialPerPage ?? 10,
     isLastPage: initialIsLastPage ?? false,
   }));
 

@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createProduct, getListProduct } from 'main/services/product.service';
 
-export function useGetListProduct() {
+export function useGetListProduct(params: any) {
   return useQuery({
-    queryKey: ['list-product'],
+    queryKey: ['list-product', params],
     queryFn: async () => {
       try {
-        const data = await getListProduct();
+        const data = await getListProduct(params);
         return data;
       } catch (error) {
         throw Error();

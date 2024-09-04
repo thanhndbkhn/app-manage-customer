@@ -28,6 +28,7 @@ export default function appRoutes() {
               background: 'rgb(241, 245, 251)',
               height: '100vh',
               padding: '0 25px',
+              overflow: 'hidden',
             }}
           >
             <ThemeRegistry>

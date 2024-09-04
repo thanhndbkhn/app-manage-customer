@@ -1,12 +1,24 @@
 import { TableRow, TableCell, TableBody, Button } from '@mui/material';
+import { usePaginationState } from 'hooks/use-pagination-state';
 import { useGetListProduct } from 'main/queries/useProduct';
+import { PaginationListing } from 'renderer/components/Pagination/pagination-listing';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 
 export const ProductListing = () => {
-  const { data: listProduct } = useGetListProduct();
+  const pagination = usePaginationState({
+    initialPage: 1,
+    initialPerPage: 15,
+  });
+  const { data: listProduct } = useGetListProduct({
+    searchQuery: '',
+    page: pagination.page,
+    perPage: pagination.perPage,
+  });
   return (
     <>
-      <TableWrapper>
+      <TableWrapper
+        style={{ overflowY: 'auto', height: 'calc(100vh - 180px)' }}
+      >
         <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
           <StyledTableHead>
             <TableRow>
@@ -26,8 +38,8 @@ export const ProductListing = () => {
             </TableRow>
           </StyledTableHead>
           <TableBody>
-            {listProduct && listProduct.length ? (
-              listProduct.map((row, index) => (
+            {listProduct && listProduct.items.length ? (
+              listProduct.items.map((row, index) => (
                 <TableRow
                   key={index}
                   sx={{
@@ -60,6 +72,21 @@ export const ProductListing = () => {
           </TableBody>
         </StyledTable>
       </TableWrapper>
+      {listProduct && (
+        <div style={{ marginTop: '15px' }}>
+          <PaginationListing
+            page={pagination.page}
+            perPage={pagination.perPage}
+            total={listProduct?.total}
+            onNextPage={() => {
+              pagination.setPage(pagination.page + 1);
+            }}
+            onPreviousPage={() => {
+              pagination.setPage(pagination.page - 1);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };

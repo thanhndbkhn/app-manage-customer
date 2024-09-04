@@ -10,12 +10,38 @@ export interface IProduct {
   CREATED_AT: string;
 }
 
-export async function getListProduct() {
+export async function getListProduct(params: {
+  searchQuery: string;
+  page: number;
+  perPage: number;
+}) {
+  const offset = (params.page - 1) * params.perPage;
+
+  const countSql = `
+    SELECT COUNT(*) as totalItems FROM PRODUCT
+    WHERE PRODUCT_NAME LIKE ?;`;
+
+  const totalResult = await window.electron.queryDatabase(countSql, [
+    `%${params.searchQuery || ''}%`,
+  ]);
+
+  const totalItems = totalResult[0].totalItems;
+  const totalPages = Math.ceil(totalItems / params.perPage);
   const result = await window.electron.queryDatabase(
-    'SELECT * FROM PRODUCT',
-    [],
+    `SELECT * FROM PRODUCT WHERE PRODUCT_NAME LIKE ?
+    ORDER BY PRODUCT_ID ASC
+    LIMIT ? OFFSET ?`,
+    [
+      `%${params.searchQuery || ''}%`, // For ERP_CODE
+      params.perPage,
+      offset,
+    ],
   );
-  return result;
+  return {
+    items: result,
+    pageCount: totalPages,
+    total: totalItems,
+  };
 }
 
 export async function createProduct(body: any) {
