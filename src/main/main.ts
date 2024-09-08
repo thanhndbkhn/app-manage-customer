@@ -9,6 +9,8 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import fs from 'fs';
+
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -153,26 +155,35 @@ app
       return getAllTODO();
     });
     ipcMain.handle('db-query', (event, sqlQuery: string, params: any[]) => {
-      const db = new Database(
-        path.join(__dirname, '../../', 'release/app', 'database.db'),
-        { verbose: console.log, fileMustExist: true },
-      );
+      const url =
+        process.env.NODE_ENV !== 'production'
+          ? path.join(__dirname, '../../', 'release/app', 'database.db')
+          : path.join(process.resourcesPath, 'database/database.db');
+
+      const db = new Database(url, {
+        verbose: console.log,
+        fileMustExist: true,
+      });
       try {
         const stmt = db.prepare(sqlQuery);
         const result = stmt.all(params);
         return result;
       } catch (error) {
-        console.error(error);
+        console.error(error, url);
         throw error;
       } finally {
         db.close();
       }
     });
     ipcMain.handle('db-insert', (event, sqlQuery: string, params: any[]) => {
-      const db = new Database(
-        path.join(__dirname, '../../', 'release/app', 'database.db'),
-        { verbose: console.log, fileMustExist: true },
-      );
+      const url =
+        process.env.NODE_ENV !== 'production'
+          ? path.join(__dirname, '../../', 'release/app', 'database.db')
+          : path.join(process.resourcesPath, 'database/database.db');
+      const db = new Database(url, {
+        verbose: console.log,
+        fileMustExist: true,
+      });
       try {
         const stmt = db.prepare(sqlQuery);
         const result = stmt.run(params);
@@ -187,10 +198,14 @@ app
 
     // Update data (UPDATE)
     ipcMain.handle('db-update', (event, sqlQuery: string, params: any[]) => {
-      const db = new Database(
-        path.join(__dirname, '../../', 'release/app', 'database.db'),
-        { verbose: console.log, fileMustExist: true },
-      );
+      const url =
+        process.env.NODE_ENV !== 'production'
+          ? path.join(__dirname, '../../', 'release/app', 'database.db')
+          : path.join(process.resourcesPath, 'database/database.db');
+      const db = new Database(url, {
+        verbose: console.log,
+        fileMustExist: true,
+      });
       try {
         const stmt = db.prepare(sqlQuery);
         const result = stmt.run(params);
@@ -205,10 +220,15 @@ app
 
     // Delete data (DELETE)
     ipcMain.handle('db-delete', (event, sqlQuery: string, params: any[]) => {
-      const db = new Database(
-        path.join(__dirname, '../../', 'release/app', 'database.db'),
-        { verbose: console.log, fileMustExist: true },
-      );
+      const url =
+        process.env.NODE_ENV !== 'production'
+          ? path.join(__dirname, '../../', 'release/app', 'database.db')
+          : path.join(process.resourcesPath, 'database/database.db');
+
+      const db = new Database(url, {
+        verbose: console.log,
+        fileMustExist: true,
+      });
       try {
         const stmt = db.prepare(sqlQuery);
         const result = stmt.run(params);
