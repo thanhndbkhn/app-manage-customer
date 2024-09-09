@@ -166,7 +166,7 @@ PRODUCT_ID,ERP_CODE,NCC_CODE,COMPANY,COMPANY_CODE,PRODUCT_NAME,PRICE,FOREIGN_CUR
 167,RGK00000V6421301,V642-1301,RIGAKU,RGK,Vòng cân (thép không gỉ) có đường kính trong 32mm và côn,"4,502.00",JPY,80%
 168,RGK00000V6427112,V642-7112,RIGAKU,RGK,Bộ hỗ trợ vận chuyển mẫu,"21,000.00",JPY,80%
 169,RGK000089973903A,8997-3903A,RIGAKU,RGK,Vòng định tâm (nhựa) có đường kính trong 44mm,"2,451.00",JPY,80%
-170,RGK000089973903B,8997-3903B,RGK0000A00012243,RGK,Vòng định tâm (nhựa) có đường kính trong 40mm: vừa với cốc lỏng CH1540 PE,"2,451.00",JPY,80%
+170,RGK000089973903B,8997-3903B,RIGAKU,RGK,Vòng định tâm (nhựa) có đường kính trong 40mm: vừa với cốc lỏng CH1540 PE,"2,451.00",JPY,80%
 171,RGK000089973903C,8997-3903C,RIGAKU,RGK,Vòng định tâm (nhựa) có đường kính trong 36mm,"2,451.00",JPY,80%
 172,RGK000089973903D,8997-3903D,RIGAKU,RGK,Vòng định tâm (nhựa) có đường kính trong 32mm,"2,451.00",JPY,80%
 173,RGK000089973903E,8997-3903E,RIGAKU,RGK,Vòng định tâm (nhựa) có đường kính trong 26mm,"2,451.00",JPY,80%
