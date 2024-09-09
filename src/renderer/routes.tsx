@@ -9,6 +9,7 @@ import { Box } from '@mui/material';
 import ReactQueryProvider from 'main/queries/ReactQueryProvider';
 import ThemeRegistry from './theme/ThemeRegistry';
 import { CustomerManager } from './customer-manager/customer-manager';
+import { BusinessManager } from './ business-manager/business-manager';
 
 export default function appRoutes() {
   return (
@@ -39,6 +40,7 @@ export default function appRoutes() {
                     <Route index element={<Navigate to="customer" replace />} />
                     <Route path="product" Component={ProductManager} />
                     <Route path="customer" Component={CustomerManager} />
+                    <Route path="business" Component={BusinessManager} />
                   </Route>
                 </Routes>
               </ReactQueryProvider>

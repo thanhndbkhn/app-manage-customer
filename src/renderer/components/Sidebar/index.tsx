@@ -74,7 +74,7 @@ export default function Sidebar() {
           '& > .MuiSvgIcon-root': {
             color: 'black',
             backgroundColor: 'green',
-            borderRadius: "50%"
+            borderRadius: '50%',
           },
 
           '&:hover': {
@@ -134,7 +134,25 @@ export default function Sidebar() {
           >
             Quản lý sản phẩm
           </a>
-          <a href="#">Quản lý kế hoạch KD</a>
+          <a
+            onClick={() => {
+              navigate('business');
+            }}
+            style={{
+              background:
+                location.pathname === '/business'
+                  ? 'rgb(202, 219, 45)'
+                  : 'rgb(57, 55, 76)',
+              borderRadius: '15px',
+              cursor: 'pointer',
+              color:
+                location.pathname === '/business'
+                  ? 'rgba(0, 0, 0, 0.87)'
+                  : 'white',
+            }}
+          >
+            Quản lý kế hoạch KD
+          </a>
         </div>
       </Drawer>
     </>
