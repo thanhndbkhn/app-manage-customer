@@ -25,3 +25,35 @@ export const generateEntityId = () => {
   console.log(id);
   return id;
 };
+
+export const convertDataToAutoComplete = (
+  dataCustomer: any[],
+  isContainDefault = true,
+  templateDefault?: { value: string; key: string }[],
+): { value: string; key: string }[] => {
+  const dataDefault = [{ value: 'Select Client Name', key: 'clientDefault' }];
+  const textDefault = templateDefault
+    ? templateDefault
+    : isContainDefault && dataDefault;
+  const data = dataCustomer.map((customer: any) => {
+    return {
+      value: customer.CUSTOMER_NAME,
+      key: customer.TAX_CODE,
+    };
+  });
+  return textDefault ? textDefault.concat(data) : data;
+};
+
+export const convertDataToAutoCompleteProduct = (
+  dataCustomer: any[],
+  isContainDefault = true,
+  templateDefault?: { value: string; key: string }[],
+): { value: string; key: string }[] => {
+  const data = dataCustomer.map((product: any) => {
+    return {
+      value: product.PRODUCT_NAME,
+      key: product.PRODUCT_ID,
+    };
+  });
+  return data;
+};

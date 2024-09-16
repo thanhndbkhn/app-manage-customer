@@ -37,7 +37,7 @@ export default function appRoutes() {
                 <Header />
                 <Routes>
                   <Route path="/">
-                    <Route index element={<Navigate to="customer" replace />} />
+                    <Route index element={<Navigate to="business" replace />} />
                     <Route path="product" Component={ProductManager} />
                     <Route path="customer" Component={CustomerManager} />
                     <Route path="business" Component={BusinessManager} />

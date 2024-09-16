@@ -17,13 +17,13 @@ export async function getListBusiness(params: {
   const totalItems = totalResult[0].totalItems;
   const totalPages = Math.ceil(totalItems / params.perPage);
   const result = await window.electron.queryDatabase(
-    `SELECT BP.*, C.CUSTOMER_NAME, SUM(CAST(REPLACE(BPD.SELLING_PRICE, ',', '') AS REAL))  AS TOTAL_SELLING_PRICE
+    `SELECT BP.*, C.CUSTOMER_NAME, C.CITY as CUSTOMER_ADDRESS, SUM(CAST(REPLACE(BPD.SELLING_PRICE, ',', '') AS REAL))  AS TOTAL_SELLING_PRICE
     FROM BUSINESS_PLAN BP
     JOIN CUSTOMER C ON BP.TAX_CODE = C.TAX_CODE
     LEFT JOIN BUSINESS_PLAN_DETAILS BPD ON BP.BUSINESS_PLAN_ID = BPD.BUSINESS_PLAN_ID
     WHERE C.CUSTOMER_NAME LIKE ?
     GROUP BY BP.BUSINESS_PLAN_ID
-    ORDER BY BP.TAX_CODE ASC
+    ORDER BY BP.BUSINESS_PLAN_ID ASC, BP.TAX_CODE ASC
     LIMIT ? OFFSET ?`,
     [
       `%${params.searchQuery || ''}%`, // For CUSTOMER_NAME

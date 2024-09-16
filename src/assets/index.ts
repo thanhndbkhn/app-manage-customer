@@ -3,4 +3,14 @@ import UncheckSwitch from './uncheck-switch.svg';
 import { ReactComponent as DownArrow } from './down-arrow.svg';
 import { ReactComponent as RightIconArrow } from './right-arrow.svg';
 import { ReactComponent as LeftIconArrow } from './left-arrow.svg';
-export { CheckSwitch, UncheckSwitch, DownArrow, RightIconArrow, LeftIconArrow };
+import { ReactComponent as SearchFilter } from './search-filter.svg';
+import { ReactComponent as AddItem } from './add-icon.svg';
+export {
+  CheckSwitch,
+  UncheckSwitch,
+  DownArrow,
+  RightIconArrow,
+  LeftIconArrow,
+  SearchFilter,
+  AddItem,
+};
