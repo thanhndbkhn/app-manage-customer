@@ -22,6 +22,7 @@ export const ProductListingAction = ({
           overflowY: 'auto',
           height: 'calc(100vh - 180px)',
           marginTop: '15px',
+          position: 'relative',
         }}
       >
         <StyledTable sx={{ minWidth: 650 }} aria-label="simple table">
