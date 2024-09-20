@@ -12,13 +12,15 @@ import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 interface IProductEdit {
   valueDefault: string;
   keyData: string;
-  onChange: (id: string, key: string) => void;
+  onChange: (index: number, product: any) => void;
+  index: number;
 }
 
 export const ProductEdit = ({
   valueDefault,
   keyData,
   onChange,
+  index,
 }: IProductEdit) => {
   const [listMaterialAutoComplete, setListMaterialAutoComplete] =
     useState<{ key: string; value: string }[]>();
@@ -29,7 +31,7 @@ export const ProductEdit = ({
     initialPerPage: 15,
   });
   const { data: listProduct } = useGetListProduct({
-    searchQuery: '',
+    searchQuery: clientSearch,
     page: pagination.page,
     perPage: pagination.perPage,
   });
@@ -54,9 +56,10 @@ export const ProductEdit = ({
   };
 
   const onSelect = (key: string, value?: string) => {
-    onChange(key || '', keyData);
-    // setValueDefault(value || "");
-    // setValue("templateId", key);
+    const item = listProduct?.items.find(
+      (product) => product.PRODUCT_ID === key,
+    );
+    onChange(index, item);
   };
 
   return (
@@ -69,6 +72,7 @@ export const ProductEdit = ({
             handleSearch={handleSearch}
             onSelect={onSelect}
             valueDefault={valueDefault}
+            topCard={`${-index * 60 - 100}px`}
           />
         )}
       </div>

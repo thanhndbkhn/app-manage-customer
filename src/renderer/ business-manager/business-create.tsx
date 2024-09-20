@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
+  Button,
   FormControl,
   Grid,
   TableBody,
@@ -8,8 +9,8 @@ import {
   TableRow,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { AddItem } from 'assets';
 import { convertDataToAutoComplete } from 'common/helper';
 import StyledTextArea from 'common/StyledTextArea';
 import StyledTextField, { TextFieldLabel } from 'common/StyledTextField';
@@ -30,6 +31,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
     useState<{ key: string; value: string }[]>();
   const [customerSelected, setCustomerSelected] = useState<any>();
   const [listProduct, setListProduct] = useState<any[]>([]);
+  const theme = useTheme();
 
   const { data: listCustomer } = useGetListCustomer({
     searchQuery: clientSearch,
@@ -91,15 +93,14 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           padding: '25px',
           background: 'rgb(225 225 225)',
           borderRadius: '15px',
+          overflowY: 'auto',
+          maxHeight: 'calc(100vh - 100px)',
         }}
       >
         {' '}
-        <Box sx={{ pb: '12px', mb: '11px' }}>
-          <Typography variant="h5">Tạo phương án kinh doanh</Typography>
-        </Box>
         <Box
           sx={{
-            p: '20px 24px 20px',
+            p: '20px 20px 20px',
             borderRadius: '15px',
             backgroundColor: 'rgb(250, 253, 255)',
             display: 'flex',
@@ -177,7 +178,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           sx={{
             mt: 3,
             minHeight: '200px',
-            p: '20px 24px 20px',
+            p: '20px 20px 20px',
             borderRadius: '15px',
             backgroundColor: 'rgb(250, 253, 255)',
             display: 'flex',
@@ -186,7 +187,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           }}
         >
           <Grid container columnSpacing={2.5} rowSpacing={3}>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>Dự án</TextFieldLabel>
                 <Controller
@@ -205,7 +206,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>
                   Điều khoản thanh toán
@@ -226,7 +227,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>Trạng thái</TextFieldLabel>
                 <Controller
@@ -245,7 +246,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth></FormControl>
             </Grid>
           </Grid>
@@ -271,7 +272,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>
                   Số lần bảo trì
@@ -292,7 +293,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={3}>
+            <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>
                   Thời gian bảo hành (tháng)
@@ -313,7 +314,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={6} lg={5}>
+            <Grid item xs={12} md={6} lg={5} style={{ paddingTop: '14px' }}>
               <FormControl fullWidth>
                 <TextFieldLabel sx={{ ml: '0px' }}>Ghi chú</TextFieldLabel>
                 <Controller
@@ -335,7 +336,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                         multiline
                         sx={{
                           '.MuiOutlinedInput-root': {
-                            height: '90px !important',
+                            height: '60px !important',
                           },
                           textarea: {
                             overflow: 'auto !important',
@@ -359,7 +360,48 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           setListProduct={setListProduct}
           listProduct={listProduct}
           addProduct={addProduct}
+          onPrevStep={onPrevStep}
         />
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            marginTop: '15px',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            type="submit"
+            disabled={false}
+            sx={{
+              mt: '24px',
+              width: '461px',
+              textTransform: 'capitalize',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: ' #2F2F3D',
+              boxShadow:
+                '0px 3.9px 3.12px 0px rgba(41, 52, 149, 0.06), 0px 9.37px 7.49px 0px rgba(41, 52, 149, 0.08), 0px 17.634px 14.114px 0px rgba(41, 52, 149, 0.10), 0px 31.46px 25.174px 0px rgba(41, 52, 149, 0.13), 0px 58.84px 47.074px 0px rgba(41, 52, 149, 0.15), 0px 140.83px 112.66px 0px rgba(41, 52, 149, 0.21)',
+            }}
+          >
+            {`Save`}
+          </Button>
+          <Typography
+            variant="caption"
+            onClick={onPrevStep}
+            sx={{
+              mt: '18px',
+              mb: '12px',
+              color: theme.palette.warning.main,
+              cursor: 'pointer',
+            }}
+          >
+            Cancel
+          </Typography>
+        </Box>
       </Box>
     </>
   );

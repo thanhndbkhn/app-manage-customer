@@ -1,5 +1,11 @@
-import { IconButton, Card, InputAdornment } from '@mui/material';
-import { useEffect, useState, useRef } from 'react';
+/** @format */
+
+'use client';
+
+import { IconButton, Card, InputAdornment, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useRef } from 'react';
+import { error } from 'console';
 import { DownArrow, SearchFilter } from 'assets';
 import StyledTextField from 'common/StyledTextField';
 import useOutsideClick from 'hooks/useOutsideClick';
@@ -13,20 +19,18 @@ interface IDropdownSelect {
   error?: boolean;
   helperText?: string;
   placeHolder?: string;
+  topCard?: string;
 }
-
 const AutoComplete = (props: IDropdownSelect) => {
   const [displaySelect, setDisplaySelect] = useState(false);
   const [isChangeText, setChangeText] = useState(false);
   const [dataListChange, setDataListChange] = useState<any>([]);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [cardTop, setCardTop] = useState('40px');
+  const cardRef = useRef(null);
 
   useOutsideClick(cardRef, () => {
     setDisplaySelect(false);
     setChangeText(false);
   });
-
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -36,24 +40,8 @@ const AutoComplete = (props: IDropdownSelect) => {
   useEffect(() => {
     setDataListChange(props.listData);
   }, [props.listData]);
-
-  useEffect(() => {
-    if (displaySelect && cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // Adjust card position if it goes beyond the window's height
-      if (rect.bottom > windowHeight) {
-        setCardTop(`-200px`); // Ensures it remains inside the window
-      } else {
-        setCardTop('40px'); // Default position if no overflow
-        //  setCardTop(`${windowHeight - rect.height }px`);
-      }
-    }
-  }, [displaySelect]);
-
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', position: 'relative' }}>
       <div
         style={{
           width: '100%',
@@ -120,8 +108,9 @@ const AutoComplete = (props: IDropdownSelect) => {
         <Card
           ref={cardRef}
           style={{
+            // width: "100%",
             position: 'absolute',
-            top: cardTop,
+            top: `${props.topCard ? props.topCard : '40px'}`,
             zIndex: '10',
             padding: '10px',
             background: '#FAFDFF',
@@ -149,28 +138,31 @@ const AutoComplete = (props: IDropdownSelect) => {
             }}
             disabled={false}
           />
-          {dataListChange.map(
-            (data: { key: string; value: string }, index: number) => {
-              return (
-                <p
-                  key={data.key}
-                  onClick={() => {
-                    setValue(data.value);
-                    props.onSelect(data.key, data.value);
-                    setDisplaySelect(false);
-                  }}
-                  style={{
-                    margin: 0,
-                    padding: '10px 5px',
-                    lineHeight: '16px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {data.value}
-                </p>
-              );
-            },
-          )}
+          <Box style={{ height: '190px', overflowY: 'auto', marginTop: '5px' }}>
+            {dataListChange.map(
+              (data: { key: string; value: string }, index: number) => {
+                return (
+                  <>
+                    <p
+                      onClick={() => {
+                        setValue(data.value);
+                        props.onSelect(data.key, data.value);
+                        setDisplaySelect(false);
+                      }}
+                      style={{
+                        margin: 0,
+                        padding: '10px 5px',
+                        lineHeight: '16px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {data.value}
+                    </p>
+                  </>
+                );
+              },
+            )}
+          </Box>
         </Card>
       )}
     </div>
