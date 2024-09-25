@@ -21,6 +21,7 @@ import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 import * as Yup from 'yup';
 import { ProductListingAction } from './product-listing-action';
+const regexDecimal = /^\d+(?:[\.,]\d+)?$/;
 
 interface IBusinessCreate {
   onPrevStep: () => void;
@@ -54,6 +55,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       mode: 'all',
       defaultValues: {
         taxCode: '',
+        products: [{ importFees: 0, shippingFees: 0 }],
       },
       resolver: yupResolver(
         Yup.object().shape({
@@ -61,6 +63,22 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
             .trim()
             .max(255, 'Max 255 characters')
             .required('Hãy chọn khách hàng'),
+          products: Yup.array()
+            .of(
+              Yup.object().shape({
+                importFees: Yup.string()
+                  .required('Required')
+                  .matches(regexDecimal, 'NotNumber'),
+                shippingFees: Yup.string()
+                  .required('Required')
+                  .matches(regexDecimal, 'NotNumber'),
+                price: Yup.string()
+                  .required('Required')
+                  .matches(regexDecimal, 'NotNumber'),
+              }),
+            )
+            .required('This field is required')
+            .min(1, 'At least one prompt is required'),
         }),
       ),
     });
@@ -361,6 +379,8 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           listProduct={listProduct}
           addProduct={addProduct}
           onPrevStep={onPrevStep}
+          control={control}
+          setValue={setValue}
         />
         <Box
           style={{
