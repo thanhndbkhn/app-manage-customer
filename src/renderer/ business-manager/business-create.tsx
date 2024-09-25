@@ -55,7 +55,9 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       mode: 'all',
       defaultValues: {
         taxCode: '',
-        products: [{ importFees: 0, shippingFees: 0 }],
+        products: [
+          { importFees: 0, shippingFees: 0, typeCalculate: 'mu', price: 0 },
+        ],
       },
       resolver: yupResolver(
         Yup.object().shape({
@@ -72,9 +74,17 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                 shippingFees: Yup.string()
                   .required('Required')
                   .matches(regexDecimal, 'NotNumber'),
-                price: Yup.string()
-                  .required('Required')
-                  .matches(regexDecimal, 'NotNumber'),
+                price: Yup.string().test(
+                  'price-validation',
+                  'Required and must be a valid number when typeCalculate is money',
+                  function (value: any) {
+                    const { typeCalculate } = this.parent; // Access sibling field
+                    if (typeCalculate === 'money') {
+                      return value && regexDecimal.test(value.toString()); // Validate price as string
+                    }
+                    return true; // No validation for other types
+                  },
+                ),
               }),
             )
             .required('This field is required')
