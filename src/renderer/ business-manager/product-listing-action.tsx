@@ -21,6 +21,8 @@ interface IProductListingAction {
   setListProduct: (list: any[]) => void;
   addProduct: () => void;
   onPrevStep: () => void;
+  clearErrors: any;
+  setError: any;
 }
 
 export const ProductListingAction = ({
@@ -29,6 +31,8 @@ export const ProductListingAction = ({
   control,
   setValue,
   addProduct,
+  clearErrors,
+  setError,
 }: IProductListingAction) => {
   const onChangeProduct = (index: number, product: any) => {
     const updatedList = [...listProduct];
@@ -169,6 +173,34 @@ export const ProductListingAction = ({
                               helperText={error?.message}
                               autoComplete="off"
                               placeholder={'Phí vc'}
+                              onBlur={(e) => {
+                                const rawValue = e.target.value.replace(
+                                  /,/g,
+                                  '',
+                                );
+                                const number = parseFloat(rawValue);
+                                if (isNaN(number)) {
+                                  setError(`products.${index}.shippingFees`, {
+                                    message: 'Not number',
+                                  });
+                                } else {
+                                  const formattedValue = number.toLocaleString(
+                                    'en-US',
+                                    {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    },
+                                  );
+
+                                  // Update the field value with the formatted number
+                                  setValue(
+                                    `products.${index}.shippingFees`,
+                                    formattedValue,
+                                  );
+                                  clearErrors(`products.${index}.shippingFees`);
+                                }
+                                // Format the number with commas and two decimal places
+                              }}
                               onChange={(e: any) => {
                                 onChangeShippingFees(
                                   e.target.value,
@@ -199,6 +231,34 @@ export const ProductListingAction = ({
                               style={{ width: '80px' }}
                               autoComplete="off"
                               placeholder={'Phí NK'}
+                              onBlur={(e) => {
+                                const rawValue = e.target.value.replace(
+                                  /,/g,
+                                  '',
+                                );
+                                const number = parseFloat(rawValue);
+                                if (isNaN(number)) {
+                                  setError(`products.${index}.importFees`, {
+                                    message: 'Not number',
+                                  });
+                                } else {
+                                  const formattedValue = number.toLocaleString(
+                                    'en-US',
+                                    {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    },
+                                  );
+
+                                  // Update the field value with the formatted number
+                                  setValue(
+                                    `products.${index}.importFees`,
+                                    formattedValue,
+                                  );
+                                  clearErrors(`products.${index}.importFees`);
+                                }
+                                // Format the number with commas and two decimal places
+                              }}
                               onChange={(e: any) => {
                                 onChangeImportFees(
                                   e.target.value,
@@ -232,14 +292,57 @@ export const ProductListingAction = ({
                         {typeCalculate === 'mu' ? (
                           'MU'
                         ) : (
-                          <StyledTextField
-                            key={item.IMPORT_FEES || index}
-                            // keyData={item.QUANTITY || index}
-                            type="text"
-                            style={{ width: '80px' }}
-                            autoComplete="off"
-                            placeholder={'Phí NK'}
-                            value={item?.IMPORT_FEES || 0}
+                          <Controller
+                            control={control}
+                            name={`products.${index}.price`}
+                            render={({ field, fieldState: { error } }) => (
+                              <StyledTextField
+                                {...field}
+                                key={index}
+                                error={Boolean(error)}
+                                helperText={error?.message}
+                                type="text"
+                                style={{ width: '80px' }}
+                                autoComplete="off"
+                                placeholder={'Giá'}
+                                onBlur={(e) => {
+                                  const rawValue = e.target.value.replace(
+                                    /,/g,
+                                    '',
+                                  );
+                                  const number = parseFloat(rawValue);
+                                  if (isNaN(number)) {
+                                    setError(`products.${index}.price`, {
+                                      message: 'Not number',
+                                    });
+                                  } else {
+                                    const formattedValue =
+                                      number.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      });
+
+                                    // Update the field value with the formatted number
+                                    setValue(
+                                      `products.${index}.price`,
+                                      formattedValue,
+                                    );
+                                    clearErrors(`products.${index}.price`);
+                                  }
+                                  // Format the number with commas and two decimal places
+                                }}
+                                onChange={(e: any) => {
+                                  onChangeImportFees(
+                                    e.target.value,
+                                    item.PRODUCT_ID,
+                                  );
+                                  setValue(
+                                    `products.${index}.price`,
+                                    e.target.value,
+                                  );
+                                }}
+                              />
+                            )}
                           />
                         )}
                       </TableCell>

@@ -50,48 +50,55 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
   }, [listCustomer]);
 
   const [valueDefault, setValueDefault] = useState<string>('');
-  const { control, handleSubmit, setValue, getValues, clearErrors, watch } =
-    useForm<any>({
-      mode: 'all',
-      defaultValues: {
-        taxCode: '',
-        products: [
-          { importFees: 0, shippingFees: 0, typeCalculate: 'mu', price: 0 },
-        ],
-      },
-      resolver: yupResolver(
-        Yup.object().shape({
-          taxCode: Yup.string()
-            .trim()
-            .max(255, 'Max 255 characters')
-            .required('Hãy chọn khách hàng'),
-          products: Yup.array()
-            .of(
-              Yup.object().shape({
-                importFees: Yup.string()
-                  .required('Required')
-                  .matches(regexDecimal, 'NotNumber'),
-                shippingFees: Yup.string()
-                  .required('Required')
-                  .matches(regexDecimal, 'NotNumber'),
-                price: Yup.string().test(
-                  'price-validation',
-                  'Required and must be a valid number when typeCalculate is money',
-                  function (value: any) {
-                    const { typeCalculate } = this.parent; // Access sibling field
-                    if (typeCalculate === 'money') {
-                      return value && regexDecimal.test(value.toString()); // Validate price as string
-                    }
-                    return true; // No validation for other types
-                  },
-                ),
-              }),
-            )
-            .required('This field is required')
-            .min(1, 'At least one prompt is required'),
-        }),
-      ),
-    });
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    watch,
+  } = useForm<any>({
+    mode: 'all',
+    defaultValues: {
+      taxCode: '',
+      products: [
+        { importFees: 0, shippingFees: 0, typeCalculate: 'mu', price: 0 },
+      ],
+    },
+    resolver: yupResolver(
+      Yup.object().shape({
+        taxCode: Yup.string()
+          .trim()
+          .max(255, 'Max 255 characters')
+          .required('Hãy chọn khách hàng'),
+        products: Yup.array()
+          .of(
+            Yup.object().shape({
+              importFees: Yup.string()
+                .required('Required')
+                .matches(regexDecimal, 'NotNumber'),
+              shippingFees: Yup.string()
+                .required('Required')
+                .matches(regexDecimal, 'NotNumber'),
+              price: Yup.string().test(
+                'price-validation',
+                'Required and must be a valid number when typeCalculate is money',
+                function (value: any) {
+                  const { typeCalculate } = this.parent; // Access sibling field
+                  if (typeCalculate === 'money') {
+                    return value && regexDecimal.test(value.toString()); // Validate price as string
+                  }
+                  return true; // No validation for other types
+                },
+              ),
+            }),
+          )
+          .required('This field is required')
+          .min(1, 'At least one prompt is required'),
+      }),
+    ),
+  });
 
   const handleSearch = (value: string) => {
     if (value.length >= 3) {
@@ -391,6 +398,8 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           onPrevStep={onPrevStep}
           control={control}
           setValue={setValue}
+          clearErrors={clearErrors}
+          setError={setError}
         />
         <Box
           style={{
