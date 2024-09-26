@@ -1,4 +1,4 @@
-import { generateEntityId } from 'common/helper';
+import { convertPriceToNumber, generateEntityId } from 'common/helper';
 
 export async function getListBusiness(params: {
   searchQuery: string;
@@ -73,5 +73,46 @@ export async function createBusiness(body: any) {
     body.numberMaintenanceTimes,
     body.note,
   ]);
+  return result;
+}
+
+export async function createBusinessDetails(bodies: any[]) {
+  const sql = `
+      INSERT INTO BUSINESS_PLAN_DETAILS (
+        "BUSINESS_PLAN_DETAILS_ID",
+        "BUSINESS_PLAN_ID",
+        "ERP_CODE",
+        "QUANTITY",
+        "COEFFICIENT_EW",
+        "SHIPPING_FEES",
+        "IMPORT_FEES",
+        "TYPE_CALCULATE",
+        "MU",
+        "SELLING_PRICE",
+        "FOREIGN_CURRENCY_SELL",
+        "NOTE"
+    ) VALUES ${bodies
+      .map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)') // Ensure proper placeholders for each row
+      .join(', ')};
+  `;
+
+  const values = bodies.flatMap((body) => [
+    generateEntityId(),
+    body.businessPlanId,
+    body.erpCode,
+    body.quantity,
+    body.coefficientEw,
+    body.shippingFees,
+    body.importFees,
+    body.typeCalculate,
+    body.typeCalculate === 'mu' ? body.mu || 1 : 0,
+    body.typeCalculate === 'mu' ? body.price : body.sellingPrice,
+    body.foreignCurrencySell,
+    body.note,
+  ]);
+
+  console.log(values);
+
+  const result = await window.electron.insertData(sql, values);
   return result;
 }

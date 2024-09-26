@@ -21,8 +21,10 @@ import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 import * as Yup from 'yup';
 import { ProductListingAction } from './product-listing-action';
-import { useCreateBusiness } from 'main/queries/useBusiness';
-const regexDecimal = /^\d+(?:[\.,]\d+)?$/;
+import {
+  useCreateBusiness,
+  useCreateBusinessDetails,
+} from 'main/queries/useBusiness';
 
 interface IBusinessCreate {
   onPrevStep: () => void;
@@ -33,7 +35,20 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
     useState<{ key: string; value: string }[]>();
   const [customerSelected, setCustomerSelected] = useState<any>();
   const [listProduct, setListProduct] = useState<any[]>([
-    { importFees: 0, shippingFees: 0, typeCalculate: 'mu', price: 0 },
+    {
+      productId: '',
+      importFees: 0,
+      shippingFees: 0,
+      typeCalculate: 'mu',
+      price: 0,
+      erpCode: '',
+      quantity: '',
+      coefficientEw: '',
+      mu: '',
+      sellingPrice: 0,
+      foreignCurrencySell: '',
+      note: '',
+    },
   ]);
   const theme = useTheme();
 
@@ -44,6 +59,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
   });
 
   const { mutateAsync: createBusiness } = useCreateBusiness();
+  const { mutateAsync: createBusinessDetails } = useCreateBusinessDetails();
 
   useEffect(() => {
     if (listCustomer) {
@@ -82,6 +98,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       }
       return value;
     });
+
   const {
     control,
     handleSubmit,
@@ -100,10 +117,15 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       products: [
         {
           productId: '',
-          importFees: 0,
-          shippingFees: 0,
-          typeCalculate: '',
+          typeCalculate: 'mu',
           price: 0,
+          erpCode: '',
+          quantity: '',
+          coefficientEw: '',
+          mu: '',
+          sellingPrice: 0,
+          foreignCurrencySell: '',
+          note: '',
         },
       ],
     },
@@ -165,18 +187,17 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                   return true; // No validation for other types
                 },
               ),
-              price: numberValidation
-                .trim()
+              sellingPrice: Yup.string()
                 .required('Required')
                 .test(
                   'price-validation',
-                  'Required and must be a valid number when typeCalculate is money',
+                  'Price must be a valid number when typeCalculate is money',
                   function (value: any) {
-                    const { typeCalculate } = this.parent; // Access sibling field
+                    const { typeCalculate } = this.parent;
                     if (typeCalculate === 'money') {
-                      return value && regexDecimal.test(value.toString()); // Validate price as string
+                      return value && numberValidation.isValidSync(value); // Use your number validation
                     }
-                    return true; // No validation for other types
+                    return true;
                   },
                 ),
             }),
@@ -186,6 +207,8 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       }),
     ),
   });
+
+  console.log(formState.errors);
 
   const handleSearch = (value: string) => {
     if (value.length >= 3) {
@@ -232,16 +255,21 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       numberMaintenanceTimes,
       note,
     };
-    const res = createBusiness(data, {
+    createBusiness(data, {
       onSuccess: (res: any) => {
-        console.log(res);
-        // notification.call(null, {
-        //   title: 'Success',
-        //   description: 'Create iot user',
-        //   variant: 'success',
-        //   removeAfterMs: 5000,
-        // });
-        onPrevStep();
+        const listProduct = getValues('products');
+        const listDataCreate = listProduct.map((product: any) => {
+          return {
+            ...product,
+            businessPlanId: res,
+          };
+        });
+        createBusinessDetails(listDataCreate, {
+          onSuccess: (res2: any) => {
+            onPrevStep();
+          },
+          onError: (error: any) => {},
+        });
       },
       onError: (error: any) => {
         // notification.call(null, {
@@ -252,7 +280,6 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
         // });
       },
     });
-    console.log(res);
   };
 
   return (
@@ -541,6 +568,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
             control={control}
             setValue={setValue}
             clearErrors={clearErrors}
+            getValue={getValues}
             setError={setError}
           />
           <Box

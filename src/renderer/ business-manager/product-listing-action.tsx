@@ -19,6 +19,7 @@ interface IProductListingAction {
   listProduct: any[];
   control: any;
   setValue: any;
+  getValue: any;
   setListProduct: (list: any[]) => void;
   addProduct: () => void;
   onPrevStep: () => void;
@@ -31,6 +32,7 @@ export const ProductListingAction = ({
   setListProduct,
   control,
   setValue,
+  getValue,
   addProduct,
   clearErrors,
   setError,
@@ -40,14 +42,18 @@ export const ProductListingAction = ({
     updatedList[index] = { ...product, QUANTITY: 1 };
     setListProduct(updatedList);
     setValue(`products.${index}.productId`, product.PRODUCT_ID);
+    setValue(`products.${index}.erpCode`, product.ERP_CODE);
+    setValue(`products.${index}.coefficientEw`, product.COEFFICIENT_EW);
+    setValue(`products.${index}.foreignCurrencySell`, product.FOREIGN_CURRENCY);
+    setValue(`products.${index}.price`, product.PRICE);
     clearErrors(`products.${index}.productId`);
   };
 
-  const [typeCalculate, setTypeCalculate] = useState('mu');
+  // const [typeCalculate, setTypeCalculate] = useState('mu');
 
-  const handleSelectType = (key: string, value: string | undefined) => {
-    setTypeCalculate(key);
-  };
+  // const handleSelectType = (key: string, value: string | undefined) => {
+  //   setTypeCalculate(key);
+  // };
 
   const onChangeShippingFees = (value: string, key: string) => {
     const fIndex = listProduct?.findIndex(
@@ -124,9 +130,9 @@ export const ProductListingAction = ({
     }
   };
 
-  const calculateTotal = (item: any) => {
+  const calculateTotal = (item: any, index: number) => {
     let total = 0;
-    if (typeCalculate === 'mu') {
+    if (getValue(`products.${index}.typeCalculate`) === 'mu') {
       total =
         item.QUANTITY *
         (((convertPriceToNumber(item.PRICE) *
@@ -159,9 +165,7 @@ export const ProductListingAction = ({
               <TableCell align="left">Phí VC</TableCell>
               <TableCell align="left">Phí NK</TableCell>
               <TableCell align="left">Cách tính</TableCell>
-              <TableCell align="left">
-                {typeCalculate === 'mu' ? 'MU' : 'Giá tiền'}
-              </TableCell>
+              <TableCell align="left">Giá trị</TableCell>
               <TableCell align="left">Tổng</TableCell>
             </TableRow>
           </StyledTableHead>
@@ -193,6 +197,10 @@ export const ProductListingAction = ({
                           // keyData={item.QUANTITY || index}
                           onChange={(e: any) => {
                             onChangeQuantity(e.target.value, item.PRODUCT_ID);
+                            setValue(
+                              `products.${index}.quantity`,
+                              e.target.value,
+                            );
                           }}
                           type="number"
                           style={{ width: '60px' }}
@@ -330,7 +338,7 @@ export const ProductListingAction = ({
                             { key: 'money', value: 'Tiền' },
                           ]}
                           onSelect={(key, value) => {
-                            handleSelectType(key, value);
+                            // handleSelectType(key, value);
                             setValue(`products.${index}.typeCalculate`, key);
                           }}
                           valueDefault={'MU'}
@@ -340,12 +348,14 @@ export const ProductListingAction = ({
                         />
                       </TableCell>
                       <TableCell align="left">
-                        {typeCalculate === 'mu' ? (
+                        {getValue(`products.${index}.typeCalculate`) ===
+                        'mu' ? (
                           <StyledTextField
                             key={index}
                             // keyData={item.QUANTITY || index}
                             onChange={(e: any) => {
                               onChangeMU(e.target.value, item.PRODUCT_ID);
+                              setValue(`products.${index}.mu`, e.target.value);
                             }}
                             type="number"
                             style={{ width: '60px' }}
@@ -356,7 +366,7 @@ export const ProductListingAction = ({
                         ) : (
                           <Controller
                             control={control}
-                            name={`products.${index}.price`}
+                            name={`products.${index}.sellingPrice`}
                             render={({ field, fieldState: { error } }) => (
                               <StyledTextField
                                 {...field}
@@ -374,7 +384,7 @@ export const ProductListingAction = ({
                                   );
                                   const number = parseFloat(rawValue);
                                   if (isNaN(number)) {
-                                    setError(`products.${index}.price`, {
+                                    setError(`products.${index}.sellingPrice`, {
                                       message: 'Not number',
                                     });
                                   } else {
@@ -386,10 +396,12 @@ export const ProductListingAction = ({
 
                                     // Update the field value with the formatted number
                                     setValue(
-                                      `products.${index}.price`,
+                                      `products.${index}.sellingPrice`,
                                       formattedValue,
                                     );
-                                    clearErrors(`products.${index}.price`);
+                                    clearErrors(
+                                      `products.${index}.sellingPrice`,
+                                    );
                                   }
                                   // Format the number with commas and two decimal places
                                 }}
@@ -399,7 +411,7 @@ export const ProductListingAction = ({
                                     item.PRODUCT_ID,
                                   );
                                   setValue(
-                                    `products.${index}.price`,
+                                    `products.${index}.sellingPrice`,
                                     e.target.value,
                                   );
                                 }}
@@ -409,8 +421,8 @@ export const ProductListingAction = ({
                         )}
                       </TableCell>
                       <TableCell align="left">
-                        {calculateTotal(item) &&
-                          calculateTotal(item)?.toLocaleString('en-US', {
+                        {calculateTotal(item, index) &&
+                          calculateTotal(item, index)?.toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
