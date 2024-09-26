@@ -1,3 +1,5 @@
+import { generateEntityId } from 'common/helper';
+
 export async function getListBusiness(params: {
   searchQuery: string;
   page: number;
@@ -36,4 +38,40 @@ export async function getListBusiness(params: {
     pageCount: totalPages,
     total: totalItems,
   };
+}
+
+export async function createBusiness(body: any) {
+  const sql = `
+      INSERT INTO BUSINESS_PLAN (
+        "BUSINESS_PLAN_ID",
+        "BUSINESS_TYPE",
+        "TAX_CODE",
+        "END_USER",
+        "QUOTE_NUMBER",
+        "PROJECT",
+        "PAYMENT_TERMS",
+        "TECHNOLOGY_TRANSFER",
+        "STATUS",
+        "WARRANTY_PERIOD",
+        "NUMBER_MAINTENANCE_TIMES",
+        "NOTE"
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+
+  const result = await window.electron.insertData(sql, [
+    generateEntityId(),
+    'Trước thầu',
+    body.taxCode,
+    body.customerName,
+    body.quoteNumber,
+    body.project,
+    body.paymentTerms,
+    body.technologyTransfer,
+    body.status,
+    body.warrantyPeriod,
+    body.numberMaintenanceTimes,
+    body.note,
+  ]);
+  return result;
 }

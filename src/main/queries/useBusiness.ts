@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getListBusiness } from 'main/services/business.service';
+import {
+  createBusiness,
+  getListBusiness,
+} from 'main/services/business.service';
 
 export function useGetListBusiness(params: any) {
   return useQuery({
@@ -14,5 +17,18 @@ export function useGetListBusiness(params: any) {
     },
     retry: false,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useCreateBusiness() {
+  return useMutation({
+    mutationFn: async (body: any) => {
+      try {
+        return createBusiness(body);
+      } catch (error) {
+        console.log(error);
+        throw Error();
+      }
+    },
   });
 }

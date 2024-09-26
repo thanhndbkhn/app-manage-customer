@@ -7,6 +7,7 @@ import {
 import { usePaginationState } from 'hooks/use-pagination-state';
 import { useGetListProduct } from 'main/queries/useProduct';
 import { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 
 interface IProductEdit {
@@ -14,6 +15,7 @@ interface IProductEdit {
   keyData: string;
   onChange: (index: number, product: any) => void;
   index: number;
+  control: any;
 }
 
 export const ProductEdit = ({
@@ -21,6 +23,7 @@ export const ProductEdit = ({
   keyData,
   onChange,
   index,
+  control,
 }: IProductEdit) => {
   const [listMaterialAutoComplete, setListMaterialAutoComplete] =
     useState<{ key: string; value: string }[]>();
@@ -65,16 +68,27 @@ export const ProductEdit = ({
   return (
     <>
       <div style={{ width: '263px' }}>
-        {listMaterialAutoComplete && (
-          <AutoComplete
-            styleCustom={{ maxWidth: '263px' }}
-            listData={listMaterialAutoComplete}
-            handleSearch={handleSearch}
-            onSelect={onSelect}
-            valueDefault={valueDefault}
-            topCard={`${-index * 60 - 100}px`}
-          />
-        )}
+        <Controller
+          control={control}
+          name={`products.${index}.productId`}
+          render={({ field, fieldState: { error } }) => (
+            <>
+              {listMaterialAutoComplete && (
+                <AutoComplete
+                  {...field}
+                  styleCustom={{ maxWidth: '263px' }}
+                  listData={listMaterialAutoComplete}
+                  handleSearch={handleSearch}
+                  onSelect={onSelect}
+                  valueDefault={valueDefault}
+                  topCard={`${-index * 60 - 100}px`}
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            </>
+          )}
+        />
       </div>
     </>
   );

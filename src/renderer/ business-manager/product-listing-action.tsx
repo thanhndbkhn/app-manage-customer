@@ -39,6 +39,8 @@ export const ProductListingAction = ({
     const updatedList = [...listProduct];
     updatedList[index] = { ...product, QUANTITY: 1 };
     setListProduct(updatedList);
+    setValue(`products.${index}.productId`, product.PRODUCT_ID);
+    clearErrors(`products.${index}.productId`);
   };
 
   const [typeCalculate, setTypeCalculate] = useState('mu');
@@ -92,14 +94,29 @@ export const ProductListingAction = ({
     }
   };
 
-  const onChangePriceMU = (value: number, key: string) => {
+  const onChangePriceManual = (value: number, key: string) => {
     const fIndex = listProduct?.findIndex(
       (valueChange) => valueChange.PRODUCT_ID === key,
     );
     if (fIndex >= 0) {
       const valueUpdate = listProduct?.map((valueData) => {
         if (valueData.PRODUCT_ID === key) {
-          return { ...valueData, PRICE_MU: Number(value) };
+          return { ...valueData, PRICE_MANUAL: Number(value) };
+        }
+        return valueData;
+      });
+      setListProduct(valueUpdate);
+    }
+  };
+
+  const onChangeMU = (value: number, key: string) => {
+    const fIndex = listProduct?.findIndex(
+      (valueChange) => valueChange.PRODUCT_ID === key,
+    );
+    if (fIndex >= 0) {
+      const valueUpdate = listProduct?.map((valueData) => {
+        if (valueData.PRODUCT_ID === key) {
+          return { ...valueData, MU: Number(value) };
         }
         return valueData;
       });
@@ -109,7 +126,6 @@ export const ProductListingAction = ({
 
   const calculateTotal = (item: any) => {
     let total = 0;
-    console.log(changePercentToDecimal(item.COEFFICIENT_EW));
     if (typeCalculate === 'mu') {
       total =
         item.QUANTITY *
@@ -117,17 +133,18 @@ export const ProductListingAction = ({
           changePercentToDecimal(item.COEFFICIENT_EW) *
           (1 + item.importFees) +
           item.shippingFees) /
-          (100 - 85)) *
+          (100 - (item.MU || 1))) *
           100);
+    } else {
+      total = (item.QUANTITY || 1) * (item.PRICE_MANUAL || 0);
     }
     return total;
   };
+
   return (
     <Box>
       <TableWrapper
         style={{
-          // overflowY: 'auto',
-          // maxHeight: '300px',
           marginTop: '15px',
         }}
       >
@@ -143,7 +160,6 @@ export const ProductListingAction = ({
               <TableCell align="left">Phí NK</TableCell>
               <TableCell align="left">Cách tính</TableCell>
               <TableCell align="left">
-                {' '}
                 {typeCalculate === 'mu' ? 'MU' : 'Giá tiền'}
               </TableCell>
               <TableCell align="left">Tổng</TableCell>
@@ -161,6 +177,7 @@ export const ProductListingAction = ({
                 >
                   <TableCell align="left" style={{ position: 'relative' }}>
                     <ProductEdit
+                      control={control}
                       index={index}
                       key={item.PRODUCT_ID || index}
                       keyData={item.PRODUCT_ID || index}
@@ -178,7 +195,7 @@ export const ProductListingAction = ({
                             onChangeQuantity(e.target.value, item.PRODUCT_ID);
                           }}
                           type="number"
-                          style={{ width: '80px' }}
+                          style={{ width: '60px' }}
                           autoComplete="off"
                           placeholder={'Weight'}
                           value={item?.QUANTITY || 0}
@@ -304,15 +321,18 @@ export const ProductListingAction = ({
                           )}
                         />
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="left" style={{ maxWidth: '130px' }}>
                         {' '}
                         <DropdownSelect
-                          styleCustom={{ maxWidth: '222px', minWidth: '250px' }}
+                          styleCustom={{ maxWidth: '80px', minWidth: '80px' }}
                           listData={[
                             { key: 'mu', value: 'MU' },
                             { key: 'money', value: 'Tiền' },
                           ]}
-                          onSelect={handleSelectType}
+                          onSelect={(key, value) => {
+                            handleSelectType(key, value);
+                            setValue(`products.${index}.typeCalculate`, key);
+                          }}
                           valueDefault={'MU'}
                           // error={Boolean(error)}
                           // helperText={error?.message}
@@ -321,7 +341,18 @@ export const ProductListingAction = ({
                       </TableCell>
                       <TableCell align="left">
                         {typeCalculate === 'mu' ? (
-                          'MU'
+                          <StyledTextField
+                            key={index}
+                            // keyData={item.QUANTITY || index}
+                            onChange={(e: any) => {
+                              onChangeMU(e.target.value, item.PRODUCT_ID);
+                            }}
+                            type="number"
+                            style={{ width: '60px' }}
+                            autoComplete="off"
+                            placeholder={'MU'}
+                            value={item?.MU || 1}
+                          />
                         ) : (
                           <Controller
                             control={control}
@@ -333,7 +364,7 @@ export const ProductListingAction = ({
                                 error={Boolean(error)}
                                 helperText={error?.message}
                                 type="text"
-                                style={{ width: '80px' }}
+                                style={{ width: '150px' }}
                                 autoComplete="off"
                                 placeholder={'Giá'}
                                 onBlur={(e) => {
@@ -363,7 +394,7 @@ export const ProductListingAction = ({
                                   // Format the number with commas and two decimal places
                                 }}
                                 onChange={(e: any) => {
-                                  onChangePriceMU(
+                                  onChangePriceManual(
                                     e.target.value,
                                     item.PRODUCT_ID,
                                   );
@@ -383,7 +414,6 @@ export const ProductListingAction = ({
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
-                        {calculateTotal(item)}
                       </TableCell>
                     </>
                   )}
