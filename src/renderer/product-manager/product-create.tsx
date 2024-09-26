@@ -30,7 +30,7 @@ interface IProductCreate {
   onPrevStep: () => void;
 }
 
-const numberValidation = Yup.string()
+export const numberValidation = Yup.string()
   .test('is-valid-number', 'Kiểu dữ liệu không đúng', (value) => {
     if (!value) return false;
 

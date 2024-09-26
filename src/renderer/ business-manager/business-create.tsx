@@ -21,6 +21,7 @@ import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 import * as Yup from 'yup';
 import { ProductListingAction } from './product-listing-action';
+import { numberValidation } from 'renderer/product-manager/product-create';
 const regexDecimal = /^\d+(?:[\.,]\d+)?$/;
 
 interface IBusinessCreate {
@@ -75,23 +76,22 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
         products: Yup.array()
           .of(
             Yup.object().shape({
-              importFees: Yup.string()
+              importFees: numberValidation.trim().required('Required'),
+              shippingFees: numberValidation.trim().required('Required'),
+              price: numberValidation
+                .trim()
                 .required('Required')
-                .matches(regexDecimal, 'NotNumber'),
-              shippingFees: Yup.string()
-                .required('Required')
-                .matches(regexDecimal, 'NotNumber'),
-              price: Yup.string().test(
-                'price-validation',
-                'Required and must be a valid number when typeCalculate is money',
-                function (value: any) {
-                  const { typeCalculate } = this.parent; // Access sibling field
-                  if (typeCalculate === 'money') {
-                    return value && regexDecimal.test(value.toString()); // Validate price as string
-                  }
-                  return true; // No validation for other types
-                },
-              ),
+                .test(
+                  'price-validation',
+                  'Required and must be a valid number when typeCalculate is money',
+                  function (value: any) {
+                    const { typeCalculate } = this.parent; // Access sibling field
+                    if (typeCalculate === 'money') {
+                      return value && regexDecimal.test(value.toString()); // Validate price as string
+                    }
+                    return true; // No validation for other types
+                  },
+                ),
             }),
           )
           .required('This field is required')

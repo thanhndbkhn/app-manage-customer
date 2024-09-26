@@ -57,3 +57,11 @@ export const convertDataToAutoCompleteProduct = (
   });
   return data;
 };
+
+export const changePercentToDecimal = (percentageString: string) => {
+  return parseFloat(percentageString) / 100;
+};
+
+export const convertPriceToNumber = (price: string) => {
+  return parseFloat(price.replace(/,/g, ''));
+};

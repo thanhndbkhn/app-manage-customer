@@ -13,6 +13,7 @@ import StyledTextField from 'common/StyledTextField';
 import DropdownSelect from 'common/DropdownSelect/dropdown-select';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { changePercentToDecimal, convertPriceToNumber } from 'common/helper';
 
 interface IProductListingAction {
   listProduct: any[];
@@ -91,6 +92,36 @@ export const ProductListingAction = ({
     }
   };
 
+  const onChangePriceMU = (value: number, key: string) => {
+    const fIndex = listProduct?.findIndex(
+      (valueChange) => valueChange.PRODUCT_ID === key,
+    );
+    if (fIndex >= 0) {
+      const valueUpdate = listProduct?.map((valueData) => {
+        if (valueData.PRODUCT_ID === key) {
+          return { ...valueData, PRICE_MU: Number(value) };
+        }
+        return valueData;
+      });
+      setListProduct(valueUpdate);
+    }
+  };
+
+  const calculateTotal = (item: any) => {
+    let total = 0;
+    console.log(changePercentToDecimal(item.COEFFICIENT_EW));
+    if (typeCalculate === 'mu') {
+      total =
+        item.QUANTITY *
+        (((convertPriceToNumber(item.PRICE) *
+          changePercentToDecimal(item.COEFFICIENT_EW) *
+          (1 + item.importFees) +
+          item.shippingFees) /
+          (100 - 85)) *
+          100);
+    }
+    return total;
+  };
   return (
     <Box>
       <TableWrapper
@@ -332,7 +363,7 @@ export const ProductListingAction = ({
                                   // Format the number with commas and two decimal places
                                 }}
                                 onChange={(e: any) => {
-                                  onChangeImportFees(
+                                  onChangePriceMU(
                                     e.target.value,
                                     item.PRODUCT_ID,
                                   );
@@ -346,7 +377,14 @@ export const ProductListingAction = ({
                           />
                         )}
                       </TableCell>
-                      <TableCell align="left">Tổng</TableCell>
+                      <TableCell align="left">
+                        {calculateTotal(item) &&
+                          calculateTotal(item)?.toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        {calculateTotal(item)}
+                      </TableCell>
                     </>
                   )}
                 </TableRow>
