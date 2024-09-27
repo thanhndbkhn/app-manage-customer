@@ -40,6 +40,9 @@ export async function getListBusiness(params: {
   };
 }
 
+export async function getListBusinessDetails(businessPlanId: number) {
+
+}
 export async function createBusiness(body: any) {
   const sql = `
       INSERT INTO BUSINESS_PLAN (

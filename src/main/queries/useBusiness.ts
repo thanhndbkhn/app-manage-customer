@@ -3,6 +3,7 @@ import {
   createBusiness,
   createBusinessDetails,
   getListBusiness,
+  getListBusinessDetails,
 } from 'main/services/business.service';
 
 export function useGetListBusiness(params: any) {
@@ -11,6 +12,22 @@ export function useGetListBusiness(params: any) {
     queryFn: async () => {
       try {
         const data = await getListBusiness(params);
+        return data;
+      } catch (error) {
+        throw Error();
+      }
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+}
+
+export function useGetBusinessPlanDetails(businessPlanDetailsId: number) {
+  return useQuery({
+    queryKey: ['business-details', businessPlanDetailsId],
+    queryFn: async () => {
+      try {
+        const data = await getListBusinessDetails(businessPlanDetailsId);
         return data;
       } catch (error) {
         throw Error();

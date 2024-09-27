@@ -20,11 +20,12 @@ import { Controller, useForm } from 'react-hook-form';
 import AutoComplete from 'renderer/components/AutoComplete/AutoComplete';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 import * as Yup from 'yup';
-import { ProductListingAction } from './product-listing-action';
+import { ProductListingAction } from './component-edit/product-listing-action';
 import {
   useCreateBusiness,
   useCreateBusinessDetails,
 } from 'main/queries/useBusiness';
+import { BusinessDetailModal } from './business-details-modal';
 
 interface IBusinessCreate {
   onPrevStep: () => void;

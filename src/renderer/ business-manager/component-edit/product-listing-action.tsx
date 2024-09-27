@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { AddItem } from 'assets';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
-import { ProductEdit } from './component-edit/product-edit';
+import { ProductEdit } from './product-edit';
 import StyledTextField from 'common/StyledTextField';
 import DropdownSelect from 'common/DropdownSelect/dropdown-select';
 import { useState } from 'react';
@@ -339,6 +339,8 @@ export const ProductListingAction = ({
                           ]}
                           onSelect={(key, value) => {
                             // handleSelectType(key, value);
+                            clearErrors(`products.${index}.importFees`);
+                            clearErrors(`products.${index}.shippingFees`);
                             setValue(`products.${index}.typeCalculate`, key);
                           }}
                           valueDefault={'MU'}

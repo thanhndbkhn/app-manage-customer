@@ -5,6 +5,7 @@ import { ReactComponent as RightIconArrow } from './right-arrow.svg';
 import { ReactComponent as LeftIconArrow } from './left-arrow.svg';
 import { ReactComponent as SearchFilter } from './search-filter.svg';
 import { ReactComponent as AddItem } from './add-icon.svg';
+import { ReactComponent as CloseIcon } from './close.svg';
 export {
   CheckSwitch,
   UncheckSwitch,
@@ -13,4 +14,5 @@ export {
   LeftIconArrow,
   SearchFilter,
   AddItem,
+  CloseIcon,
 };

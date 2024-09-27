@@ -3,6 +3,8 @@ import { usePaginationState } from 'hooks/use-pagination-state';
 import { useGetListBusiness } from 'main/queries/useBusiness';
 import { PaginationListing } from 'renderer/components/Pagination/pagination-listing';
 import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
+import { BusinessDetailModal } from './business-details-modal';
+import { useState } from 'react';
 
 export const BusinessListing = () => {
   const pagination = usePaginationState({
@@ -14,6 +16,8 @@ export const BusinessListing = () => {
     page: pagination.page,
     perPage: pagination.perPage,
   });
+
+  const [businessPlanId, setBusinessPlanId] = useState(0);
 
   return (
     <>
@@ -28,7 +32,7 @@ export const BusinessListing = () => {
                 align="left"
                 style={{ maxWidth: '300px', minWidth: '300px' }}
               >
-                Tên Khách hàng
+                Tên sản phẩm
               </TableCell>
               <TableCell align="left">Địa Chỉ</TableCell>
               <TableCell align="left">Số báo giá</TableCell>
@@ -44,6 +48,9 @@ export const BusinessListing = () => {
               listBusiness.items.map((row, index) => (
                 <TableRow
                   key={index}
+                  onClick={() => {
+                    setBusinessPlanId(row.BUSINESS_PLAN_ID);
+                  }}
                   sx={{
                     '&:last-child td, &:last-child th': { border: 0 },
                     cursor: 'pointer',
@@ -93,6 +100,14 @@ export const BusinessListing = () => {
             }}
           />
         </div>
+      )}
+      {businessPlanId && (
+        <BusinessDetailModal
+          handleClose={() => {
+            setBusinessPlanId(0);
+          }}
+          businessPlanId={businessPlanId}
+        />
       )}
     </>
   );
