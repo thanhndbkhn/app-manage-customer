@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import ReactQueryProvider from 'main/queries/ReactQueryProvider';
 import ThemeRegistry from './theme/ThemeRegistry';
 import { CustomerManager } from './customer-manager/customer-manager';
-import { BusinessManager } from './ business-manager/business-manager';
+import { BusinessManager } from './business-manager/business-manager';
 
 export default function appRoutes() {
   return (

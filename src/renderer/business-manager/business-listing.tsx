@@ -17,7 +17,7 @@ export const BusinessListing = () => {
     perPage: pagination.perPage,
   });
 
-  const [businessPlanId, setBusinessPlanId] = useState(0);
+  const [businessPlanId, setBusinessPlanId] = useState('');
 
   return (
     <>
@@ -104,7 +104,7 @@ export const BusinessListing = () => {
       {businessPlanId && (
         <BusinessDetailModal
           handleClose={() => {
-            setBusinessPlanId(0);
+            setBusinessPlanId('');
           }}
           businessPlanId={businessPlanId}
         />

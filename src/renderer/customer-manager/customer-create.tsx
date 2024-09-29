@@ -84,24 +84,10 @@ export const CustomerCreate = ({ onPrevStep }: ICreateCustomer) => {
 
     createCustomer(data, {
       onSuccess: () => {
-        // notification.call(null, {
-        //   title: 'Success',
-        //   description: 'Create iot user',
-        //   variant: 'success',
-        //   removeAfterMs: 5000,
-        // });
         onPrevStep();
       },
-      onError: (error: any) => {
-        // notification.call(null, {
-        //   title: 'Error',
-        //   description: 'Create iot user',
-        //   variant: 'error',
-        //   removeAfterMs: 5000,
-        // });
-      },
+      onError: (error: any) => {},
     });
-    console.log(data);
   };
 
   const handleSelectType = (key: string, value: string | undefined) => {

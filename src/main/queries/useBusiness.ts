@@ -22,7 +22,7 @@ export function useGetListBusiness(params: any) {
   });
 }
 
-export function useGetBusinessPlanDetails(businessPlanDetailsId: number) {
+export function useGetBusinessPlanDetails(businessPlanDetailsId: string) {
   return useQuery({
     queryKey: ['business-details', businessPlanDetailsId],
     queryFn: async () => {

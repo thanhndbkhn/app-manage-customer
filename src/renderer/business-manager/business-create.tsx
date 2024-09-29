@@ -209,7 +209,6 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
     ),
   });
 
-  console.log(formState.errors);
 
   const handleSearch = (value: string) => {
     if (value.length >= 3) {
