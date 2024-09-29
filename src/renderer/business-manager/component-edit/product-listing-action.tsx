@@ -11,9 +11,10 @@ import { TableWrapper, StyledTable, StyledTableHead } from 'style/styles';
 import { ProductEdit } from './product-edit';
 import StyledTextField from 'common/StyledTextField';
 import DropdownSelect from 'common/DropdownSelect/dropdown-select';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { changePercentToDecimal, convertPriceToNumber } from 'common/helper';
+import StyledTextArea from 'common/StyledTextArea';
 
 interface IProductListingAction {
   listProduct: any[];
@@ -25,6 +26,7 @@ interface IProductListingAction {
   onPrevStep: () => void;
   clearErrors: any;
   setError: any;
+  watch: any;
 }
 
 export const ProductListingAction = ({
@@ -35,6 +37,7 @@ export const ProductListingAction = ({
   getValue,
   addProduct,
   clearErrors,
+  watch,
   setError,
 }: IProductListingAction) => {
   const onChangeProduct = (index: number, product: any) => {
@@ -146,6 +149,30 @@ export const ProductListingAction = ({
     }
     return total;
   };
+  const watchFields = watch();
+
+  const calculateTotalAll = () => {
+    const products = getValue(`products`);
+    let total = 0;
+    products.map((item: any) => {
+      if (item.productId) {
+        if (item.typeCalculate === 'mu') {
+          total +=
+            Number(item.quantity) *
+            (((convertPriceToNumber(item.price) *
+              changePercentToDecimal(item.coefficientEw) *
+              (1 + parseFloat(item.importFees)) +
+              parseFloat(item.shippingFees)) /
+              (100 - (item.mu || 1))) *
+              100);
+        } else {
+          total +=
+            item.quantity * convertPriceToNumber(item.sellingPrice || '0');
+        }
+      }
+    });
+    return total;
+  };
 
   return (
     <Box>
@@ -166,6 +193,7 @@ export const ProductListingAction = ({
               <TableCell align="left">Phí NK</TableCell>
               <TableCell align="left">Cách tính</TableCell>
               <TableCell align="left">Giá trị</TableCell>
+              <TableCell align="left">Ghi chú</TableCell>
               <TableCell align="left">Tổng</TableCell>
             </TableRow>
           </StyledTableHead>
@@ -423,6 +451,25 @@ export const ProductListingAction = ({
                         )}
                       </TableCell>
                       <TableCell align="left">
+                        <Controller
+                          control={control}
+                          name={`products.${index}.note`}
+                          render={({ field, fieldState: { error } }) => (
+                            <StyledTextField
+                              {...field}
+                              key={item.NOTE || index}
+                              // keyData={item.QUANTITY || index}
+                              type="text"
+                              style={{ width: '80px' }}
+                              error={Boolean(error)}
+                              helperText={error?.message}
+                              autoComplete="off"
+                              placeholder={'Ghi chú'}
+                            />
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell align="left">
                         {calculateTotal(item, index) &&
                           calculateTotal(item, index)?.toLocaleString('en-US', {
                             minimumFractionDigits: 2,
@@ -437,6 +484,15 @@ export const ProductListingAction = ({
           </TableBody>
           <AddItem style={{ cursor: 'pointer' }} onClick={() => addProduct()} />
         </StyledTable>
+        <Box style={{ display: 'flex', justifyContent: 'end' }}>
+          <>
+            Tổng tiền:{' '}
+            {calculateTotalAll().toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </>
+        </Box>
       </TableWrapper>
     </Box>
   );

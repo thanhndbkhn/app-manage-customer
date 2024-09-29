@@ -229,8 +229,6 @@ export async function createBusinessDetails(bodies: any[]) {
     body.note,
   ]);
 
-  console.log(values);
-
   const result = await window.electron.insertData(sql, values);
   return result;
 }

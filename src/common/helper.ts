@@ -63,5 +63,6 @@ export const changePercentToDecimal = (percentageString: string) => {
 };
 
 export const convertPriceToNumber = (price: string) => {
-  return parseFloat(price.replace(/,/g, ''));
+  const parsed = parseFloat(price.replace(/,/g, ''));
+  return Number.isInteger(parsed) ? parsed : parseFloat(parsed.toFixed(2));
 };

@@ -43,7 +43,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       typeCalculate: 'mu',
       price: 0,
       erpCode: '',
-      quantity: '',
+      quantity: 1,
       coefficientEw: '',
       mu: '',
       sellingPrice: 0,
@@ -121,7 +121,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
           typeCalculate: 'mu',
           price: 0,
           erpCode: '',
-          quantity: '',
+          quantity: 1,
           coefficientEw: '',
           mu: '',
           sellingPrice: 0,
@@ -209,7 +209,6 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
     ),
   });
 
-
   const handleSearch = (value: string) => {
     if (value.length >= 3) {
       setClientSearch(value);
@@ -228,7 +227,21 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
   };
 
   const addProduct = () => {
-    setListProduct([...listProduct, {}]);
+    setListProduct([
+      ...listProduct,
+      {
+        productId: '',
+        typeCalculate: 'mu',
+        price: 0,
+        erpCode: '',
+        quantity: 1,
+        coefficientEw: '',
+        mu: '',
+        sellingPrice: 0,
+        foreignCurrencySell: '',
+        note: '',
+      },
+    ]);
   };
 
   const handleSubmitForm = () => {
@@ -570,6 +583,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
             clearErrors={clearErrors}
             getValue={getValues}
             setError={setError}
+            watch={watch}
           />
           <Box
             style={{
