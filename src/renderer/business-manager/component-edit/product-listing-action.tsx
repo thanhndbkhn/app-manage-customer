@@ -189,8 +189,8 @@ export const ProductListingAction = ({
               <TableCell align="left">Giá</TableCell>
               <TableCell align="left">Ngoại tệ</TableCell>
               <TableCell align="left">Hệ số EW</TableCell>
-              <TableCell align="left">Phí VC</TableCell>
-              <TableCell align="left">Phí NK</TableCell>
+              <TableCell align="left">Phí vận chuyển(USD)</TableCell>
+              <TableCell align="left">Phí nhập khẩu (%)</TableCell>
               <TableCell align="left">Cách tính</TableCell>
               <TableCell align="left">Giá trị</TableCell>
               <TableCell align="left">Ghi chú</TableCell>
@@ -363,7 +363,7 @@ export const ProductListingAction = ({
                           styleCustom={{ maxWidth: '80px', minWidth: '80px' }}
                           listData={[
                             { key: 'mu', value: 'MU' },
-                            { key: 'money', value: 'Tiền' },
+                            { key: 'money', value: 'Giá bán' },
                           ]}
                           onSelect={(key, value) => {
                             // handleSelectType(key, value);

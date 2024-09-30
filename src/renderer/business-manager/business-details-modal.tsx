@@ -141,8 +141,8 @@ export const BusinessDetailModal = ({
                       <TableCell align="left">Giá</TableCell>
                       <TableCell align="left">Ngoại tệ</TableCell>
                       <TableCell align="left">Hệ số EW</TableCell>
-                      <TableCell align="left">Phí VC</TableCell>
-                      <TableCell align="left">Phí NK</TableCell>
+                      <TableCell align="left">Phí vận chuyển</TableCell>
+                      <TableCell align="left">Phí nhập khẩu</TableCell>
                       <TableCell align="left">Cách tính</TableCell>
                       <TableCell align="left">Giá bán ra</TableCell>
                       <TableCell align="left">Ghi chú</TableCell>
@@ -175,7 +175,7 @@ export const BusinessDetailModal = ({
                           </TableCell>
                           <TableCell align="left">
                             {' '}
-                            {product.typeCalculate === 'mu' ? 'MU' : 'Tiền'}
+                            {product.typeCalculate === 'mu' ? 'MU' : 'Giá bán'}
                           </TableCell>
                           <TableCell align="left">
                             {product.sellingPrice}

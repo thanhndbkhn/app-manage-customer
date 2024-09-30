@@ -158,7 +158,7 @@ app
       const url =
         process.env.NODE_ENV !== 'production'
           ? path.join(__dirname, '../../', 'release/app', 'database.db')
-          : path.join(process.resourcesPath, 'database/database.db');
+          : path.join(process.resourcesPath, 'database', 'database.db');
 
       const db = new Database(url, {
         verbose: console.log,
@@ -179,7 +179,7 @@ app
       const url =
         process.env.NODE_ENV !== 'production'
           ? path.join(__dirname, '../../', 'release/app', 'database.db')
-          : path.join(process.resourcesPath, 'database/database.db');
+          : path.join(process.resourcesPath, 'database', 'database.db');
       const db = new Database(url, {
         verbose: console.log,
         fileMustExist: true,
@@ -201,7 +201,7 @@ app
       const url =
         process.env.NODE_ENV !== 'production'
           ? path.join(__dirname, '../../', 'release/app', 'database.db')
-          : path.join(process.resourcesPath, 'database/database.db');
+          : path.join(process.resourcesPath, 'database', 'database.db');
       const db = new Database(url, {
         verbose: console.log,
         fileMustExist: true,
@@ -223,7 +223,7 @@ app
       const url =
         process.env.NODE_ENV !== 'production'
           ? path.join(__dirname, '../../', 'release/app', 'database.db')
-          : path.join(process.resourcesPath, 'database/database.db');
+          : path.join(process.resourcesPath, 'database', 'database.db');
 
       const db = new Database(url, {
         verbose: console.log,
