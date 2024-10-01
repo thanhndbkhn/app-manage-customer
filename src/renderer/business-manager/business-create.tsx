@@ -26,6 +26,8 @@ import {
   useCreateBusinessDetails,
 } from 'main/queries/useBusiness';
 import { BusinessDetailModal } from './business-details-modal';
+import DropdownSelect from 'common/DropdownSelect/dropdown-select';
+import { LIST_STATUS_BUSINESS } from './constants';
 
 interface IBusinessCreate {
   onPrevStep: () => void;
@@ -113,6 +115,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
     mode: 'all',
     defaultValues: {
       taxCode: '',
+      status: '10',
       numberMaintenanceTimes: 1,
       warrantyPeriod: 1,
       products: [
@@ -139,7 +142,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
         project: Yup.string()
           .trim()
           .max(255, 'Max 255 characters')
-          .required('Hãy điền tên dự án'),
+          .required('Hãy điền end user'),
         paymentTerms: Yup.string()
           .trim()
           .max(255, 'Max 255 characters')
@@ -208,6 +211,10 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
       }),
     ),
   });
+
+  const handleSelectType = (key: string, value: string | undefined) => {
+    setValue('status', key);
+  };
 
   const handleSearch = (value: string) => {
     if (value.length >= 3) {
@@ -406,7 +413,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
             <Grid container columnSpacing={2.5} rowSpacing={3}>
               <Grid item xs={12} md={6} lg={3} style={{ paddingTop: '14px' }}>
                 <FormControl fullWidth>
-                  <TextFieldLabel sx={{ ml: '0px' }}>Dự án</TextFieldLabel>
+                  <TextFieldLabel sx={{ ml: '0px' }}>End user</TextFieldLabel>
                   <Controller
                     control={control}
                     name={`project`}
@@ -415,7 +422,7 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                         {...field}
                         type="text"
                         autoComplete="off"
-                        placeholder="Tên dự án"
+                        placeholder="End user"
                         error={Boolean(error)}
                         helperText={error?.message}
                       />
@@ -451,14 +458,33 @@ export const BusinessCreate = ({ onPrevStep }: IBusinessCreate) => {
                     control={control}
                     name={`status`}
                     render={({ field, fieldState: { error } }) => (
-                      <StyledTextField
-                        {...field}
-                        type="text"
-                        autoComplete="off"
-                        placeholder="trạng thái"
-                        error={Boolean(error)}
-                        helperText={error?.message}
-                      />
+                      // <StyledTextField
+                      //   {...field}
+                      //   type="text"
+                      //   autoComplete="off"
+                      //   placeholder="trạng thái"
+                      //   error={Boolean(error)}
+                      //   helperText={error?.message}
+                      // />
+                      <Box
+                        style={{
+                          width: '100%',
+                          maxWidth: '222px',
+                          minWidth: '250px',
+                        }}
+                      >
+                        <DropdownSelect
+                          {...field}
+                          styleCustom={{ maxWidth: '222px', minWidth: '250px' }}
+                          listData={LIST_STATUS_BUSINESS}
+                          onSelect={handleSelectType}
+                          valueDefault={'New 10%'}
+                          error={Boolean(error)}
+                          helperText={error?.message}
+                          placeHolder={'Phân loại'}
+                        />
+                      </Box>
+                      //
                     )}
                   />
                 </FormControl>

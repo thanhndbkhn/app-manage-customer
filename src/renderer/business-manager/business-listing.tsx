@@ -36,7 +36,7 @@ export const BusinessListing = () => {
               </TableCell>
               <TableCell align="left">Địa Chỉ</TableCell>
               <TableCell align="left">Số báo giá</TableCell>
-              <TableCell align="left">Dự án</TableCell>
+              <TableCell align="left">End user</TableCell>
               <TableCell align="left">Trạng thái </TableCell>
               <TableCell align="left">Thời gian bảo hành</TableCell>
               <TableCell align="left">Ngày tạo</TableCell>
